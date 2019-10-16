@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public interface FragmentView {
     void showData(ArrayList<Task> tasks);
     void updateData();
+    void showError();
 }
 
 

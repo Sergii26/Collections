@@ -26,8 +26,8 @@ public class MapsPresenter implements MapsPresenterCommunicator {
     }
 
     public ArrayList<Task> getEmptyTasksFromFactory(){
-        TasksFactory factory = new TasksFactory();
-        return factory.getEmptyTasks(this);
+        Log.d("MyLog", "in MapsPresenter getTasksFromFactory()");
+        return TasksFactory.getEmptyTasks(this);
     }
 
     public void onDataChange(){
@@ -35,8 +35,14 @@ public class MapsPresenter implements MapsPresenterCommunicator {
         view.updateData();
     }
 
-    public void getData(){
-        Log.d("MyLog", "in MapsPresenter getData()");
-        view.showData(tasks);
+    public void getData(String enteredElements, String enteredThreads){
+        Log.d("MyLog", "in CollectionsPresenter getData()");
+        if(enteredElements.trim().length() > 0 && enteredThreads.trim().length() > 0
+                && Integer.parseInt(enteredThreads) > 0 && Integer.parseInt(enteredElements) > 0){
+            getTasksFromFactory(Integer.parseInt(enteredElements), Integer.parseInt(enteredThreads));
+            view.showData(tasks);
+        } else {
+            view.showError();
+        }
     }
 }

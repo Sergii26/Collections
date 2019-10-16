@@ -26,8 +26,7 @@ public class CollectionsPresenter implements CollectionsPresenterCommunicator {
 
     public ArrayList<Task> getEmptyTasksFromFactory(){
         Log.d("MyLog", "in CollectionsPresenter getEmptyTasksFromFactory()");
-        TasksFactory factory = new TasksFactory();
-        return factory.getEmptyTasks(this);
+        return TasksFactory.getEmptyTasks(this);
     }
 
     public void onDataChange(){
@@ -35,9 +34,15 @@ public class CollectionsPresenter implements CollectionsPresenterCommunicator {
         view.updateData();
     }
 
-    public void getData(){
+    public void getData(String enteredElements, String enteredThreads){
         Log.d("MyLog", "in CollectionsPresenter getData()");
-        view.showData(tasks);
+        if(enteredElements.trim().length() > 0 && enteredThreads.trim().length() > 0
+                && Integer.parseInt(enteredThreads) > 0 && Integer.parseInt(enteredElements) > 0){
+            getTasksFromFactory(Integer.parseInt(enteredElements), Integer.parseInt(enteredThreads));
+            view.showData(tasks);
+        } else {
+            view.showError();
+        }
     }
 }
 

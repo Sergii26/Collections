@@ -34,8 +34,6 @@ public class Task {
     public static final int SEARCH_IN_MAP = 8;
     public static final int REMOVING = 9;
 
-
-
     private String nameOfTask;
     private String timeForTask;
     private int task;
@@ -73,8 +71,6 @@ public class Task {
         this.nameOfTask = defineTask(nameOfCollectionOrMap, task);
         timeForTask = "N/A ms";
     }
-
-
 
     public int getTask() {
         return task;

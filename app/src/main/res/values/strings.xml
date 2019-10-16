@@ -9,4 +9,5 @@
     <string name="tv_elements">Elements</string>
     <string name="tv_threads">Threads</string>
     <string name="enter_elements_and_threads">Enter amount of elements and threads</string>
+    <string name="btn_in_progress">In progress</string>
 </resources>

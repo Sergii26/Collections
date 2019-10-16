@@ -21,27 +21,24 @@ public class TasksFactory {
 
     private static ArrayList<Task> tasksForCollections;
     private static ArrayList<Task> tasksForMaps;
-    private CollectionWorker collectionWorker;
-    private MapWorker mapWorker;
+    private CollectionsSupplier collectionSupplier;
+    private MapsSupplier mapsSupplier;
 
     public TasksFactory(int amountOfElements, int amountOfThreads, CollectionsPresenter collectionPresenter) {
-        collectionWorker = new CollectionWorker(amountOfElements, amountOfThreads);
+        collectionSupplier = new CollectionsSupplier(amountOfElements, amountOfThreads);
         tasksForCollections = new ArrayList<>(21);
     }
 
     public TasksFactory(int amountOfElements, int amountOfThreads, MapsPresenter mapsPresenter) {
-        mapWorker = new MapWorker(amountOfElements, amountOfThreads);
+        mapsSupplier = new MapsSupplier(amountOfElements, amountOfThreads);
         tasksForMaps = new ArrayList<>(6);
-    }
-
-    public TasksFactory(){
     }
 
     public ArrayList<Task> getTasks(CollectionsPresenterCommunicator collectionsPresenterCommunicator){
         for (int i = 0; i < 7; i++) {
-            Task arrayListTask = new Task(nameOfCollection(collectionWorker.getArrayList()), i, collectionWorker.getArrayList(), collectionsPresenterCommunicator);
-            Task linkedListTask = new Task(nameOfCollection(collectionWorker.getLinkedList()), i, collectionWorker.getLinkedList(), collectionsPresenterCommunicator);
-            Task copyOnWriteArrayListTask = new Task(nameOfCollection(collectionWorker.getCopyOnWriteList()), i, collectionWorker.getCopyOnWriteList(), collectionsPresenterCommunicator);
+            Task arrayListTask = new Task(nameOfCollection(collectionSupplier.getArrayList()), i, collectionSupplier.getArrayList(), collectionsPresenterCommunicator);
+            Task linkedListTask = new Task(nameOfCollection(collectionSupplier.getLinkedList()), i, collectionSupplier.getLinkedList(), collectionsPresenterCommunicator);
+            Task copyOnWriteArrayListTask = new Task(nameOfCollection(collectionSupplier.getCopyOnWriteList()), i, collectionSupplier.getCopyOnWriteList(), collectionsPresenterCommunicator);
             tasksForCollections.add(arrayListTask);
             tasksForCollections.add(linkedListTask);
             tasksForCollections.add(copyOnWriteArrayListTask);
@@ -52,8 +49,8 @@ public class TasksFactory {
 
     public ArrayList<Task> getTasks(MapsPresenterCommunicator mapsPresenterCommunicator){
         for (int i = 7; i < 10; i++) {
-            Task hashMapTask = new Task(nameOfCollection(mapWorker.getHashMap()), i, mapWorker.getHashMap(), mapsPresenterCommunicator);
-            Task treeMapTask = new Task(nameOfCollection(mapWorker.getTreeMap()), i, mapWorker.getTreeMap(), mapsPresenterCommunicator);
+            Task hashMapTask = new Task(nameOfCollection(mapsSupplier.getHashMap()), i, mapsSupplier.getHashMap(), mapsPresenterCommunicator);
+            Task treeMapTask = new Task(nameOfCollection(mapsSupplier.getTreeMap()), i, mapsSupplier.getTreeMap(), mapsPresenterCommunicator);
             tasksForMaps.add(hashMapTask);
             tasksForMaps.add(treeMapTask);
         }
@@ -61,7 +58,7 @@ public class TasksFactory {
         return tasksForMaps;
     }
 
-    public ArrayList<Task> getEmptyTasks(MapsPresenterCommunicator mapsPresenterCommunicator){
+    public static ArrayList<Task> getEmptyTasks(MapsPresenterCommunicator mapsPresenterCommunicator){
         ArrayList<Task> emptyTasks = new ArrayList<>();
         for (int i = 7; i < 10; i++) {
             Task hashMapTask = new Task(TasksFactory.nameOfCollection(new HashMap<Integer, Integer>()), i, new HashMap<Integer, Integer>());
@@ -74,7 +71,7 @@ public class TasksFactory {
         return emptyTasks;
     }
 
-    public ArrayList<Task> getEmptyTasks(CollectionsPresenterCommunicator collectionsPresenterCommunicator){
+    public static ArrayList<Task> getEmptyTasks(CollectionsPresenterCommunicator collectionsPresenterCommunicator){
         ArrayList<Task> emptyTasks = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             Task arrayListTask = new Task(TasksFactory.nameOfCollection(new ArrayList<Integer>()), i, new ArrayList<Integer>());

@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CollectionsRecyclerAdapter extends RecyclerView.Adapter<CollectionsRecyclerAdapter.CollectionsTasksViewHolder>{
+public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdapter.CollectionsTasksViewHolder>{
 
     private ArrayList<Task> tasks;
 
-    public CollectionsRecyclerAdapter(){
+    public TasksRecyclerAdapter(){
         tasks = new ArrayList<>();
     }
 
