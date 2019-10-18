@@ -1,4 +1,4 @@
-package com.practice.collectionsandmaps.model;
+package com.practice.collectionsandmaps.models;
 
 import android.util.Log;
 

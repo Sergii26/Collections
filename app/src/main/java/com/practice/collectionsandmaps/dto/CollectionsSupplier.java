@@ -1,7 +1,9 @@
-package com.practice.collectionsandmaps.model;
+package com.practice.collectionsandmaps.dto;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.practice.collectionsandmaps.models.CollectionsTasksFactory;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -50,7 +52,7 @@ public class CollectionsSupplier {
             }
             Log.d("MyLog", "in CollectionWorker asyncTask for copyOnWriteList. Amount of elements = " + amountOfElements + ": Arr - "
                     + arrayList.size() + "; Linked - " + linkedList.size() + "; CopyOnWrite - " + copyOnWriteArrayList.size());
-            TasksFactory.doingCollectionsTasks(amountOfThreads);
+            CollectionsTasksFactory.doingCollectionsTasks(amountOfThreads);
             return null;
         }
     }

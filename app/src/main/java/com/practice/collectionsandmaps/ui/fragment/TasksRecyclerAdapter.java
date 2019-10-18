@@ -1,4 +1,4 @@
-package com.practice.collectionsandmaps.adapters;
+package com.practice.collectionsandmaps.ui.fragment;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,27 +9,28 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.practice.collectionsandmaps.R;
-import com.practice.collectionsandmaps.model.Task;
+import com.practice.collectionsandmaps.dto.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdapter.CollectionsTasksViewHolder>{
 
-    private ArrayList<Task> tasks;
+    private List<Task> tasks;
 
     public TasksRecyclerAdapter(){
         tasks = new ArrayList<>();
     }
 
-    public void setTasks(ArrayList<Task> tasks) {
+    public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
         this.notifyDataSetChanged();
     }
 
-    public ArrayList<Task> getTasks() {
+    public List<Task> getTasks() {
         return tasks;
     }
 
@@ -42,14 +43,7 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
 
     @Override
     public void onBindViewHolder(@NonNull CollectionsTasksViewHolder collectionsTasksViewHolder, int i) {
-        Task task = tasks.get(i);
-        collectionsTasksViewHolder.tvNameOfTask.setText(task.getTaskTitle());
-        collectionsTasksViewHolder.tvTimeForTask.setText(task.getTimeForTask());
-        if(task.getTimeForTask().equals("N/A ms")) {
-            collectionsTasksViewHolder.progressBar.setVisibility(View.VISIBLE);
-        } else {
-            collectionsTasksViewHolder.progressBar.setVisibility(View.INVISIBLE);
-        }
+        collectionsTasksViewHolder.bindViews(tasks.get(i));
     }
 
     @Override
@@ -68,6 +62,16 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         public CollectionsTasksViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void bindViews(Task task){
+            this.tvNameOfTask.setText(task.getTaskTitle());
+            this.tvTimeForTask.setText(task.getTimeForTask());
+            if(task.getTimeForTask().equals("N/A ms")) {
+                this.progressBar.setVisibility(View.VISIBLE);
+            } else {
+                this.progressBar.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }

@@ -1,9 +1,10 @@
-package com.practice.collectionsandmaps.model;
+package com.practice.collectionsandmaps.dto;
 
 import android.util.Log;
 
-import com.practice.collectionsandmaps.presenters.CollectionsPresenterCommunicator;
-import com.practice.collectionsandmaps.presenters.MapsPresenterCommunicator;
+import com.practice.collectionsandmaps.models.CollectionWorker;
+import com.practice.collectionsandmaps.models.MapWorker;
+import com.practice.collectionsandmaps.ui.fragment.PresenterCommunicator;
 
 import java.util.List;
 import java.util.Map;
@@ -39,19 +40,18 @@ public class Task {
     private int task;
     private List<Integer> list;
     private Map<Integer, Integer> map;
-    private CollectionsPresenterCommunicator collectionsPresenterCommunicator;
-    private MapsPresenterCommunicator mapsPresenterCommunicator;
+    private PresenterCommunicator presenterCommunicator;
 
-    public Task(String nameOfCollectionOrMap, int task, List<Integer> list, CollectionsPresenterCommunicator collectionsPresenterCommunicator) {
-        this.collectionsPresenterCommunicator = collectionsPresenterCommunicator;
+    public Task(String nameOfCollectionOrMap, int task, List<Integer> list, PresenterCommunicator presenterCommunicator) {
+        this.presenterCommunicator = presenterCommunicator;
         this.list = list;
         this.task = task;
         this.nameOfTask = defineTask(nameOfCollectionOrMap, task);
         timeForTask = "N/A ms";
     }
 
-    public Task(String nameOfCollectionOrMap, int task, Map<Integer, Integer> map, MapsPresenterCommunicator mapsPresenterCommunicator) {
-        this.mapsPresenterCommunicator = mapsPresenterCommunicator;
+    public Task(String nameOfCollectionOrMap, int task, Map<Integer, Integer> map, PresenterCommunicator presenterCommunicator) {
+        this.presenterCommunicator = presenterCommunicator;
         this.map = map;
         this.task = task;
         this.nameOfTask = defineTask(nameOfCollectionOrMap, task);
@@ -123,6 +123,7 @@ public class Task {
                 name = REMOVING_TASK_TITLE + nameOfCollection + ":";
                 break;
         }
+        Log.d("MyLog", "In Task.defineTask() - " + name);
         return name;
     }
 
@@ -162,10 +163,6 @@ public class Task {
         }
         Log.d("MyLog", "In Task.doTask() - before setTimeForTask()");
         setTimeForTask(timeForTask + " ms");
-        if(task <= 6) {
-            collectionsPresenterCommunicator.onDataChange();
-        } else {
-            mapsPresenterCommunicator.onDataChange();
-        }
+        presenterCommunicator.onDataChange();
     }
 }

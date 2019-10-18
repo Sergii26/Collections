@@ -1,7 +1,9 @@
-package com.practice.collectionsandmaps.model;
+package com.practice.collectionsandmaps.dto;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.practice.collectionsandmaps.models.MapsTasksFactory;
 
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -45,7 +47,7 @@ public class MapsSupplier {
             }
             Log.d("MyLog", "in CollectionWorker asyncTask for copyOnWriteList. Amount of elements = " + amountOfElements + ": HashMap - "
                     + hashMap.size() + "; TreeMap - " + treeMap.size() );
-            TasksFactory.doingMapsTasks(amountOfThreads);
+            MapsTasksFactory.doingMapsTasks(amountOfThreads);
             return null;
         }
     }
