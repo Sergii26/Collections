@@ -1,29 +1,29 @@
-package com.practice.collectionsandmaps.models;
+package com.practice.collectionsandmaps.models.tasksFactories;
 
 import android.util.Log;
 
-import com.practice.collectionsandmaps.dto.CollectionsSupplier;
 import com.practice.collectionsandmaps.dto.Task;
+import com.practice.collectionsandmaps.models.Suppliers.Supplier;
 import com.practice.collectionsandmaps.ui.fragment.PresenterCommunicator;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CollectionsTasksFactory {
+public class CollectionsTasksFactory implements TasksFactory {
 
-    private static ArrayList<Task> tasksForCollections;
-    private CollectionsSupplier collectionSupplier;
+    private static final List<Task> tasksForCollections = new ArrayList<>();
+    private List<Task> emptyTasks;
+    private Supplier collectionSupplier;
+    private final int SPAN_COUNT = 3;
 
-    public CollectionsTasksFactory(int amountOfElements, int amountOfThreads) {
-        collectionSupplier = new CollectionsSupplier(amountOfElements, amountOfThreads);
-        tasksForCollections = new ArrayList<>(21);
-    }
-
-    public ArrayList<Task> getTasks(PresenterCommunicator presenterCommunicator){
+    public List<Task> getTasks(Supplier supplier, PresenterCommunicator presenterCommunicator){
+        tasksForCollections.clear();
+        collectionSupplier = supplier;
         for (int i = 0; i < 7; i++) {
             Task arrayListTask = new Task(nameOfCollection(collectionSupplier.getArrayList()), i, collectionSupplier.getArrayList(), presenterCommunicator);
             Task linkedListTask = new Task(nameOfCollection(collectionSupplier.getLinkedList()), i, collectionSupplier.getLinkedList(), presenterCommunicator);
@@ -36,8 +36,13 @@ public class CollectionsTasksFactory {
         return tasksForCollections;
     }
 
-    public static ArrayList<Task> getEmptyTasks(PresenterCommunicator presenterCommunicator){
-        ArrayList<Task> emptyTasks = new ArrayList<>();
+    @Override
+    public int getSpanCount() {
+        return SPAN_COUNT;
+    }
+
+    public List<Task> getEmptyTasks(PresenterCommunicator presenterCommunicator){
+        emptyTasks = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             Task arrayListTask = new Task(CollectionsTasksFactory.nameOfCollection(new ArrayList<Integer>()), i, new ArrayList<Integer>());
             arrayListTask.setTimeForTask("N/A ms ");

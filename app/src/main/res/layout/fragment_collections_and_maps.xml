@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:textOn="@string/btn_in_progress"
-        android:textOff="@string/btn_start"
+        android:textOn="@string/btn_stop_state"
+        android:textOff="@string/btn_start_state"
         app:layout_constraintBottom_toBottomOf="@+id/etAmountOfThreads"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

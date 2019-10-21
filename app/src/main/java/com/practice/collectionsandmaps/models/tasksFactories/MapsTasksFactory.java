@@ -1,29 +1,30 @@
-package com.practice.collectionsandmaps.models;
+package com.practice.collectionsandmaps.models.tasksFactories;
 
 import android.util.Log;
 
-import com.practice.collectionsandmaps.dto.MapsSupplier;
 import com.practice.collectionsandmaps.dto.Task;
+import com.practice.collectionsandmaps.models.Suppliers.Supplier;
 import com.practice.collectionsandmaps.ui.fragment.PresenterCommunicator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MapsTasksFactory {
+public class MapsTasksFactory implements TasksFactory {
 
-    private static ArrayList<Task> tasksForMaps;
-    private MapsSupplier mapsSupplier;
+    private static final List<Task> tasksForMaps = new ArrayList<>();
+    private List<Task> emptyTasks;
+    private Supplier mapsSupplier;
+    private final int SPAN_COUNT = 2;
 
-    public MapsTasksFactory(int amountOfElements, int amountOfThreads) {
-        mapsSupplier = new MapsSupplier(amountOfElements, amountOfThreads);
-        tasksForMaps = new ArrayList<>(6);
-    }
-
-    public ArrayList<Task> getTasks(PresenterCommunicator presenterCommunicator){
+    @Override
+    public List<Task> getTasks(Supplier supplier, PresenterCommunicator presenterCommunicator) {
+        tasksForMaps.clear();
+        mapsSupplier = supplier;
         for (int i = 7; i < 10; i++) {
             Task hashMapTask = new Task(nameOfCollection(mapsSupplier.getHashMap()), i, mapsSupplier.getHashMap(), presenterCommunicator);
             Task treeMapTask = new Task(nameOfCollection(mapsSupplier.getTreeMap()), i, mapsSupplier.getTreeMap(), presenterCommunicator);
@@ -34,8 +35,13 @@ public class MapsTasksFactory {
         return tasksForMaps;
     }
 
-    public static ArrayList<Task> getEmptyTasks(PresenterCommunicator presenterCommunicator){
-        ArrayList<Task> emptyTasks = new ArrayList<>();
+    @Override
+    public int getSpanCount() {
+        return SPAN_COUNT;
+    }
+
+    public List<Task> getEmptyTasks(PresenterCommunicator presenterCommunicator){
+        emptyTasks = new ArrayList<>();
         for (int i = 7; i < 10; i++) {
             Task hashMapTask = new Task(MapsTasksFactory.nameOfCollection(new HashMap<Integer, Integer>()), i, new HashMap<Integer, Integer>());
             hashMapTask.setTimeForTask("N/A ms ");

@@ -19,19 +19,20 @@ import butterknife.ButterKnife;
 
 public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdapter.CollectionsTasksViewHolder>{
 
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
+    private boolean stopCalculation;
 
     public TasksRecyclerAdapter(){
-        tasks = new ArrayList<>();
+    }
+
+    public void setStopCalculation(boolean stopCalculation) {
+        this.stopCalculation = stopCalculation;
     }
 
     public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+        this.tasks.clear();
+        this.tasks.addAll(tasks);
         this.notifyDataSetChanged();
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
     }
 
     @NonNull
@@ -43,7 +44,11 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
 
     @Override
     public void onBindViewHolder(@NonNull CollectionsTasksViewHolder collectionsTasksViewHolder, int i) {
-        collectionsTasksViewHolder.bindViews(tasks.get(i));
+        if(stopCalculation) {
+            collectionsTasksViewHolder.bindViewAfterStop(tasks.get(i));
+        } else {
+            collectionsTasksViewHolder.bindView(tasks.get(i));
+        }
     }
 
     @Override
@@ -64,14 +69,20 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindViews(Task task){
+        public void bindView(Task task){
             this.tvNameOfTask.setText(task.getTaskTitle());
             this.tvTimeForTask.setText(task.getTimeForTask());
-            if(task.getTimeForTask().equals("N/A ms")) {
+            if(task.isDefaultTime()) {
                 this.progressBar.setVisibility(View.VISIBLE);
             } else {
                 this.progressBar.setVisibility(View.INVISIBLE);
             }
+        }
+
+        public void bindViewAfterStop(Task task){
+            this.tvNameOfTask.setText(task.getTaskTitle());
+            this.tvTimeForTask.setText(task.getTimeForTask());
+            this.progressBar.setVisibility(View.INVISIBLE);
         }
     }
 }

@@ -24,10 +24,8 @@ public class CollectionsAndMapsPagerAdapter extends FragmentStatePagerAdapter {
         final List<Fragment> fragments = fm.getFragments();
         this.fragments = new CollectionsAndMapsFragment[2];
         if(fragments.isEmpty()){
-            this.fragments[0] = new CollectionsAndMapsFragment();
-            this.fragments[0].setIndication(FragmentsIndication.COLLECTION);
-            this.fragments[1] = new CollectionsAndMapsFragment();
-            this.fragments[1].setIndication(FragmentsIndication.MAP);
+            this.fragments[0] = CollectionsAndMapsFragment.newInstance(FragmentsIndication.COLLECTION);
+            this.fragments[1] = CollectionsAndMapsFragment.newInstance(FragmentsIndication.MAP);
         } else {
             this.fragments[0] = (CollectionsAndMapsFragment)fragments.get(0);
             this.fragments[1] = (CollectionsAndMapsFragment)fragments.get(1);

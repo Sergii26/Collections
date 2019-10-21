@@ -1,4 +1,4 @@
-package com.practice.collectionsandmaps.models;
+package com.practice.collectionsandmaps.models.workers;
 
 import android.util.Log;
 
@@ -6,8 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CollectionWorker {
-
-
 
     public static double addingToStartTask(List<Integer> list) {
         Log.d("MyLog", "In addingToStartTask(List<Integer> list). For " + list.getClass().getName());

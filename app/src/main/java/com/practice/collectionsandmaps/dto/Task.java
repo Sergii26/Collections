@@ -2,8 +2,8 @@ package com.practice.collectionsandmaps.dto;
 
 import android.util.Log;
 
-import com.practice.collectionsandmaps.models.CollectionWorker;
-import com.practice.collectionsandmaps.models.MapWorker;
+import com.practice.collectionsandmaps.models.workers.CollectionWorker;
+import com.practice.collectionsandmaps.models.workers.MapWorker;
 import com.practice.collectionsandmaps.ui.fragment.PresenterCommunicator;
 
 import java.util.List;
@@ -35,6 +35,8 @@ public class Task {
     public static final int SEARCH_IN_MAP = 8;
     public static final int REMOVING = 9;
 
+    public static final String DEFAULT_TIME = "N/A ms";
+
     private String nameOfTask;
     private String timeForTask;
     private int task;
@@ -47,7 +49,7 @@ public class Task {
         this.list = list;
         this.task = task;
         this.nameOfTask = defineTask(nameOfCollectionOrMap, task);
-        timeForTask = "N/A ms";
+        timeForTask = DEFAULT_TIME;
     }
 
     public Task(String nameOfCollectionOrMap, int task, Map<Integer, Integer> map, PresenterCommunicator presenterCommunicator) {
@@ -55,21 +57,26 @@ public class Task {
         this.map = map;
         this.task = task;
         this.nameOfTask = defineTask(nameOfCollectionOrMap, task);
-        timeForTask = "N/A ms";
+        timeForTask = DEFAULT_TIME;
     }
 
     public Task(String nameOfCollectionOrMap, int task, List<Integer> list) {
         this.list = list;
         this.task = task;
         this.nameOfTask = defineTask(nameOfCollectionOrMap, task);
-        timeForTask = "N/A ms";
+        timeForTask = DEFAULT_TIME;
     }
 
     public Task(String nameOfCollectionOrMap, int task, Map<Integer, Integer> map) {
         this.map = map;
         this.task = task;
         this.nameOfTask = defineTask(nameOfCollectionOrMap, task);
-        timeForTask = "N/A ms";
+        timeForTask = DEFAULT_TIME;
+    }
+
+    public Task(Task task){
+        this.nameOfTask = task.nameOfTask;
+        this.timeForTask = task.timeForTask;
     }
 
     public int getTask() {
@@ -86,6 +93,10 @@ public class Task {
 
     public String getTimeForTask() {
         return timeForTask;
+    }
+
+    public boolean isDefaultTime(){
+        return this.timeForTask.equals(DEFAULT_TIME);
     }
 
     public String defineTask(String nameOfCollection, int task){
