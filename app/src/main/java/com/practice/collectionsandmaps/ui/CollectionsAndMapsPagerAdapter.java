@@ -46,7 +46,7 @@ public class CollectionsAndMapsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return fragments.length;
     }
 
     @Override    public CharSequence getPageTitle(int position) {

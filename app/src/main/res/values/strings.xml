@@ -16,4 +16,56 @@
     <string name="collection_toggle_title">Collections</string>
     <string name="map_toggle_title">Maps</string>
     <string name="default_task_time">N/A ms</string>
+
+    <string name="adding_to_start_array_list">Adding to start in ArrayList </string>
+    <string name="adding_to_middle_array_list">Adding to middle in ArrayList </string>
+    <string name="adding_to_end_array_list">Adding to end in ArrayList </string>
+    <string name="removing_from_start_array_list">Removing from start in ArrayList </string>
+    <string name="removing_from_middle_array_list">Removing from middle in ArrayList </string>
+    <string name="removing_from_end_array_list">Removing from end in ArrayList </string>
+    <string name="search_array_list">Search in ArrayList </string>
+
+    <string name="adding_to_start_linked_list">Adding to start in LinkedList </string>
+    <string name="adding_to_middle_linked_list">Adding to middle in LinkedList </string>
+    <string name="adding_to_end_linked_list">Adding to end in LinkedList </string>
+    <string name="removing_from_start_linked_list">Removing from start in LinkedList </string>
+    <string name="removing_from_middle_linked_list">Removing from middle in LinkedList </string>
+    <string name="removing_from_end_linked_list">Removing from end in LinkedList </string>
+    <string name="search_linked_list">Search in LinkedList </string>
+
+    <string name="adding_to_start_copy_on_write_list">Adding to start in CopyOnWriteList </string>
+    <string name="adding_to_middle_copy_on_write_list">Adding to middle in CopyOnWriteList </string>
+    <string name="adding_to_end_copy_on_write_list">Adding to end in CopyOnWriteList </string>
+    <string name="removing_from_start_copy_on_write_list">Removing from start in CopyOnWriteList </string>
+    <string name="removing_from_middle_copy_on_write_list">Removing from middle in CopyOnWriteList </string>
+    <string name="removing_from_end_copy_on_write_list">Removing from end in CopyOnWriteList </string>
+    <string name="search_copy_on_write_list">Search in CopyOnWriteList </string>
+
+    <string name="search_hash_map">Search in HashMap </string>
+    <string name="adding_hash_map">Adding to HashMap </string>
+    <string name="removing_hash_map">Removing from HashMap </string>
+
+    <string name="search_tree_map">Search in TreeMap </string>
+    <string name="adding_tree_map">Adding to TreeMap </string>
+    <string name="removing_tree_map">Removing from TreeMap </string>
+
+    <string name="array_list">ArrayList </string>
+    <string name="copy_on_write_list">CopyOnWriteList </string>
+    <string name="linked_list">LinkedList </string>
+    <string name="hash_map">HashMap </string>
+    <string name="tree_map">TreeMap </string>
+
+
+<!--    public static final String SEARCH_TASK_TITLE = "Search in ";-->
+
+<!--    public static final String ADDING_TASK_TITLE = "Adding to ";-->
+<!--    public static final String REMOVING_TASK_TITLE = "Removing from ";-->
+<!-- -->
+
+<!--    public static final String ADDING_TO_START_TASK_TITLE = "Adding to start in";-->
+<!--    public static final String ADDING_TO_MIDDLE_TASK_TITLE = "Adding to middle in ";-->
+<!--    public static final String ADDING_TO_END_TASK_TITLE = "Adding to end in ";-->
+<!--    public static final String REMOVING_FROM_START_TASK_TITLE = "Removing from start in ";-->
+<!--    public static final String REMOVING_FROM_MIDDLE_TASK_TITLE = "Removing from middle in ";-->
+<!--    public static final String REMOVING_FROM_END_TASK_TITLE = "Removing from end in ";-->
 </resources>

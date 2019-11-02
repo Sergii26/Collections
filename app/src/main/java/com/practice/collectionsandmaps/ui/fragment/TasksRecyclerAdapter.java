@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.practice.collectionsandmaps.R;
-import com.practice.collectionsandmaps.dto.Task;
+import com.practice.collectionsandmaps.dto.TaskData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,36 +19,38 @@ import butterknife.ButterKnife;
 
 public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdapter.CollectionsTasksViewHolder>{
 
-    private List<Task> tasks = new ArrayList<>();
-    private boolean stopCalculation;
+    private List<TaskData> tasks = new ArrayList<>();
 
-    public TasksRecyclerAdapter(){
-    }
-
-    public void setStopCalculation(boolean stopCalculation) {
-        this.stopCalculation = stopCalculation;
-    }
-
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(List<TaskData> tasks) {
         this.tasks.clear();
         this.tasks.addAll(tasks);
         this.notifyDataSetChanged();
     }
 
+    public void hideProgress(){
+        for(int i = 0; i < tasks.size(); i++){
+            tasks.get(i).setShowProgress(false);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void showProgress(){
+        for(int i = 0; i < tasks.size(); i++){
+            tasks.get(i).setShowProgress(true);
+        }
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public CollectionsTasksViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-    View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.task_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.task_item, viewGroup, false);
         return new CollectionsTasksViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CollectionsTasksViewHolder collectionsTasksViewHolder, int i) {
-        if(stopCalculation) {
-            collectionsTasksViewHolder.bindViewAfterStop(tasks.get(i));
-        } else {
-            collectionsTasksViewHolder.bindView(tasks.get(i));
-        }
+        collectionsTasksViewHolder.bindView(tasks.get(i));
     }
 
     @Override
@@ -67,22 +69,17 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         public CollectionsTasksViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
         }
 
-        public void bindView(Task task){
-            this.tvNameOfTask.setText(task.getTaskTitle());
+        public void bindView(TaskData task){
+            this.tvNameOfTask.setText(task.getNameOfTask());
             this.tvTimeForTask.setText(task.getTimeForTask());
-            if(task.isDefaultTime()) {
+            if(task.getShowProgress()) {
                 this.progressBar.setVisibility(View.VISIBLE);
             } else {
                 this.progressBar.setVisibility(View.INVISIBLE);
             }
-        }
-
-        public void bindViewAfterStop(Task task){
-            this.tvNameOfTask.setText(task.getTaskTitle());
-            this.tvTimeForTask.setText(task.getTimeForTask());
-            this.progressBar.setVisibility(View.INVISIBLE);
         }
     }
 }

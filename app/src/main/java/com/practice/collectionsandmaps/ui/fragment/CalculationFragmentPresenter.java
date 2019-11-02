@@ -3,134 +3,122 @@ package com.practice.collectionsandmaps.ui.fragment;
 import android.util.Log;
 
 import com.practice.collectionsandmaps.R;
-import com.practice.collectionsandmaps.dto.Task;
-import com.practice.collectionsandmaps.models.Suppliers.CollectionsSupplier;
-import com.practice.collectionsandmaps.models.Suppliers.MapsSupplier;
-import com.practice.collectionsandmaps.models.Suppliers.Supplier;
-import com.practice.collectionsandmaps.models.tasksFactories.CollectionsTasksFactory;
-import com.practice.collectionsandmaps.models.tasksFactories.MapsTasksFactory;
-import com.practice.collectionsandmaps.models.tasksFactories.TasksFactory;
+import com.practice.collectionsandmaps.dto.TaskData;
+import com.practice.collectionsandmaps.models.factories.TasksFactory;
+import com.practice.collectionsandmaps.models.suppliers.TasksSupplier;
+import com.practice.collectionsandmaps.models.workers.TimeCalculator;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class CalculationFragmentPresenter implements PresenterCommunicator {
+public class CalculationFragmentPresenter {
 
     private TasksFactory tasksFactory;
-    private Supplier supplier;
+    private TasksSupplier tasksSupplier;
+    private TimeCalculator timeCalculator;
     private FragmentView view;
-    private List<Task> tasks;
-    private List<Task> tasksAfterStop;
-    private int indication;
-    private boolean stopCalculation;
+    private List<TaskData> tasks;
     private boolean isValid;
+    private ExecutorService executorPool;
 
-    public CalculationFragmentPresenter(FragmentView view, int indication) {
-        isValid = false;
+    public CalculationFragmentPresenter(FragmentView view, TasksSupplier tasksSupplier, TasksFactory tasksFactory, TimeCalculator timeCalculator){
+        isValid = true;
         this.view = view;
-        this.indication = indication;
-        if(isCollections()){
-            tasksFactory = new CollectionsTasksFactory();
-            supplier = new CollectionsSupplier();
-        } else {
-            tasksFactory = new MapsTasksFactory();
-            supplier = new MapsSupplier();
-        }
-    }
-
-    public boolean isCollections(){
-        if(this.indication == FragmentsIndication.COLLECTION){
-            return true;
-        }
-        return false;
+        this.tasksSupplier = tasksSupplier;
+        this.tasksFactory = tasksFactory;
+        this.timeCalculator = timeCalculator;
     }
 
     public void startCalculation(String amountOfElements, String amountOfThreads){
-        stopCalculation = false;
         getData(amountOfElements, amountOfThreads);
+        if(isValid) {
+            view.showProgress();
+            doTasks(Integer.parseInt(amountOfThreads));
+        } else {
+            view.hideProgress();
+        }
     }
 
     public void stopCalculation(){
-        stopCalculation = true;
-        getDataAfterStop();
-        stopCalculation = false;
+        stopTasks();
+        showDataAfterStop();
+        view.setBtnChecked(false);
     }
 
-    public boolean isDefaultTime(){
-        for(Task task: tasks){
-            if(task.getTimeForTask().equals(Task.DEFAULT_TIME)){
+    public void doTasks(int amountOfThreads){
+        executorPool = Executors.newFixedThreadPool(amountOfThreads);
+        for(int i = 0; i < tasks.size(); i++){
+            final TaskData task = tasks.get(i);
+            executorPool.submit(() -> {
+                timeCalculator.execAndSetupTime(task);
+                Log.d("MyLog", "at doingCollectionsTasks() Time for " + task.getNameOfTask() + task.getTimeForTask());
+                task.setShowProgress(false);
+                onDataChange();
+            });
+        }
+    }
+
+    public void stopTasks(){
+        executorPool.shutdownNow();
+        executorPool = null;
+    }
+
+    public boolean isNotDefaultTime(){
+        for(TaskData task: tasks){
+            if(task.isDefaultTime()){
                 return false;
             }
         }
         return true;
     }
 
-    public boolean isStopped(){
-        return !isDefaultTime();
+    public int getCollectionsCount(){
+        return tasksFactory.getCollectionsCount();
     }
 
-    public int getSpanCount(){
-        return tasksFactory.getSpanCount();
-    }
-
-    public void getTasksFromFactory(int amountOfElements, int amountOfThreads){
-            Log.d("MyLog", "in CalculationFragmentPresenter getTasksFromFactory()");
-            tasks = tasksFactory.getTasks(supplier, this);
-    }
-
-    public List<Task> getEmptyTasksFromFactory(){
-            Log.d("MyLog", "in Presenter getEmptyTasksFromFactory()");
-            return tasksFactory.getEmptyTasks(this);
+    public List<TaskData> getTasksFromFactory(){
+        Log.d("MyLog", "in CalculationFragmentPresenter getTasksFromFactory()");
+        tasks = tasksFactory.getTasks(tasksSupplier);
+        return tasks;
     }
 
     public void onDataChange(){
         Log.d("MyLog", "in CalculationFragmentPresenter onDataChange()");
-        if(!stopCalculation) {
-            view.updateData();
-        }
+        view.updateData();
     }
 
-    public void getDataAfterStop(){
-        Log.d("MyLog", "in CalculationFragmentPresenter getDataAfterStop() stopCalculation = " + stopCalculation);
-        tasksAfterStop = new ArrayList<>();
-        for(Task task: tasks) {
-            tasksAfterStop.add(new Task(task));
-        }
-        view.showData(tasksAfterStop);
+    public void showDataAfterStop(){
+        view.showData(tasksFactory.commitTasks(tasks));
     }
 
     public void getData(String enteredElements, String enteredThreads){
        Log.d("MyLog", "in CalculationFragmentPresenter getData()");
-       isValid = false;
+       isValid = true;
        if(enteredElements.isEmpty()){
            view.showError(view.getStringFromResources(R.string.elements_must_not_be_empty));
-           isValid = true;
+           isValid = false;
+           Log.d("MyLog", "in CalculationFragmentPresenter getData() error branch isValid = " + isValid);
        }
        if(enteredThreads.isEmpty()) {
            view.showError(view.getStringFromResources(R.string.threads_must_not_be_empty));
-           isValid = true;
+           isValid = false;
        }
        if(isValid) {
-           isValid = false;
-       } else {
            final int elementsInt = Integer.parseInt(enteredElements);
            final int threadsInt = Integer.parseInt(enteredThreads);
            if (elementsInt == 0) {
                view.showError(view.getStringFromResources(R.string.enter_elements));
-               isValid = true;
+               isValid = false;
            }
            if (threadsInt == 0) {
                view.showError(view.getStringFromResources(R.string.enter_threads));
-               isValid = true;
+               isValid = false;
            }
            if (isValid) {
-               isValid = false;
-           } else {
-               supplier.setAmountOfElements(Integer.parseInt(enteredElements));
-               supplier.setAmountOfThreads(Integer.parseInt(enteredThreads));
-               supplier.fillSuppliedEntities();
-               getTasksFromFactory(Integer.parseInt(enteredElements), Integer.parseInt(enteredThreads));
-               view.showData(tasks);
+               tasksSupplier.setAmountOfElements(Integer.parseInt(enteredElements));
+               tasksSupplier.fillSuppliedEntities();
+               view.showData(getTasksFromFactory());
            }
        }
     }

@@ -1,11 +1,10 @@
-package com.practice.collectionsandmaps.models.Suppliers;
+package com.practice.collectionsandmaps.models.suppliers;
 
 import java.util.List;
 import java.util.Map;
 
-public interface Supplier {
+public interface TasksSupplier {
     void setAmountOfElements(int amountOfElements);
-    void setAmountOfThreads(int amountOfThreads);
     void fillSuppliedEntities();
     List<Integer> getArrayList();
     List<Integer> getLinkedList();
