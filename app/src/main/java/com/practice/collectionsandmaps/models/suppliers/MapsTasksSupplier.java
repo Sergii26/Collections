@@ -2,71 +2,42 @@ package com.practice.collectionsandmaps.models.suppliers;
 
 import android.util.Log;
 
+import com.practice.collectionsandmaps.R;
+import com.practice.collectionsandmaps.dto.MapTaskData;
+import com.practice.collectionsandmaps.dto.Tags;
+import com.practice.collectionsandmaps.dto.TaskData;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MapsTasksSupplier implements TasksSupplier {
 
-    private static int amountOfElements;
-    private static Map<Integer, Integer> hashMap = new HashMap<>();
-    private static Map<Integer, Integer> treeMap = new TreeMap<>();
-
-    public MapsTasksSupplier() {
-        Log.d("MyLog", "in MapsTasksSupplier constructor. Amount of elements = " + amountOfElements + " ALL MAPS "
-                + hashMap.size() + " " + treeMap.size());
+    @Override
+    public List<TaskData> getTasks() {
+        final List<TaskData> tasksForMaps = new ArrayList<>();
+        tasksForMaps.add(new MapTaskData(R.string.adding_hash_map, Tags.ADDING, new HashMap<>()));
+        tasksForMaps.add(new MapTaskData(R.string.adding_tree_map, Tags.ADDING, new TreeMap<>()));
+        tasksForMaps.add(new MapTaskData(R.string.search_hash_map, Tags.SEARCH_IN_MAP, new HashMap<>()));
+        tasksForMaps.add(new MapTaskData(R.string.search_tree_map, Tags.SEARCH_IN_MAP, new TreeMap<>()));
+        tasksForMaps.add(new MapTaskData(R.string.removing_hash_map, Tags.REMOVING, new HashMap<>()));
+        tasksForMaps.add(new MapTaskData(R.string.removing_tree_map, Tags.REMOVING, new TreeMap<>()));
+        Log.d("MyLog", "in CollectionsTasksSupplier getTasks() for maps. Amount of Tasks: " + tasksForMaps.size());
+        return tasksForMaps;
     }
 
-    public Map<Integer, Integer> getHashMap() {
-        return hashMap;
-    }
-
-    public Map<Integer, Integer> getTreeMap() {
-        return treeMap;
+    public List<TaskData> getInitialResult() {
+        final List<TaskData> results = new ArrayList<>(6);
+        for (TaskData td : getTasks()) {
+            results.add(td.getResult());
+        }
+        return results;
     }
 
     @Override
-    public void setAmountOfElements(int amountOfElements) {
-        MapsTasksSupplier.amountOfElements = amountOfElements;
+    public int getCollectionsCount() {
+        return 2;
     }
 
-    @Override
-    public void fillSuppliedEntities() {
-        clearSuppliedEntities();
-        final ExecutorService service = Executors.newSingleThreadExecutor();
-        service.submit(() -> {
-                hashMap = new HashMap<>(amountOfElements);
-                for (int i = 0; i < amountOfElements; i++) {
-                    Integer integer = i;
-                    hashMap.put(integer, integer);
-                }
-                treeMap.putAll(hashMap);
-                Log.d("MyLog", "in CollectionSupplier asyncTask. Amount of elements = " + amountOfElements + ": HashMap - "
-                        + hashMap.size() + "; TreeMap - " + treeMap.size() );
-        });
-    }
-
-    @Override
-    public List<Integer> getArrayList() {
-        return null;
-    }
-
-    @Override
-    public List<Integer> getLinkedList() {
-        return null;
-    }
-
-    @Override
-    public List<Integer> getCopyOnWriteList() {
-        return null;
-    }
-
-    @Override
-    public void clearSuppliedEntities() {
-        hashMap.clear();
-        treeMap.clear();
-    }
 }

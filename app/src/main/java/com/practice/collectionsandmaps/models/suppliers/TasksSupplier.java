@@ -1,15 +1,12 @@
 package com.practice.collectionsandmaps.models.suppliers;
 
+
+import com.practice.collectionsandmaps.dto.TaskData;
+
 import java.util.List;
-import java.util.Map;
 
 public interface TasksSupplier {
-    void setAmountOfElements(int amountOfElements);
-    void fillSuppliedEntities();
-    List<Integer> getArrayList();
-    List<Integer> getLinkedList();
-    List<Integer> getCopyOnWriteList();
-    void clearSuppliedEntities();
-    Map<Integer, Integer> getHashMap();
-    Map<Integer, Integer> getTreeMap();
+    List<TaskData> getTasks();
+    int getCollectionsCount();
+    List<TaskData> getInitialResult();
 }

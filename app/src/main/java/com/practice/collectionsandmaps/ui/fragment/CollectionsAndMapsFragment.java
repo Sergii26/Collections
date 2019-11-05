@@ -18,12 +18,14 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.practice.collectionsandmaps.R;
+import com.practice.collectionsandmaps.dto.CalculationResult;
 import com.practice.collectionsandmaps.dto.TaskData;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class CollectionsAndMapsFragment extends Fragment implements FragmentView, CompoundButton.OnCheckedChangeListener {
 
@@ -40,18 +42,7 @@ public class CollectionsAndMapsFragment extends Fragment implements FragmentView
     private CalculationFragmentPresenter calculationFragmentPresenter;
     private final TasksRecyclerAdapter adapter = new TasksRecyclerAdapter();
     private final Handler  mainHandler = new Handler(Looper.getMainLooper());
-    private final Runnable myRunnable = new Runnable() {
-        @Override
-        public void run() {
-            Log.d("MyLog", "In CollectionsFragment at updateData() calculation is running");
-            adapter.notifyDataSetChanged();
-            if(calculationFragmentPresenter.isNotDefaultTime()){
-                Log.d("MyLog", "In CollectionsFragment at updateData() calculation is running isNotDefaultTime() = "
-                        + calculationFragmentPresenter.isNotDefaultTime());
-                btnStart.setChecked(false);
-            }
-        }
-    };
+    private Unbinder unbinder;
 
     public CollectionsAndMapsFragment() {
     }
@@ -76,7 +67,7 @@ public class CollectionsAndMapsFragment extends Fragment implements FragmentView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         btnStart.setWidth((int) btnStart.getPaint().measureText(getString(R.string.btn_stop_state)) + btnStart.getPaddingLeft() + btnStart.getPaddingRight());
         btnStart.setOnCheckedChangeListener(this);
         rv.setAdapter(adapter);
@@ -87,20 +78,23 @@ public class CollectionsAndMapsFragment extends Fragment implements FragmentView
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_collections_and_maps, container, false);
         if(adapter.getItemCount() == 0){
-                adapter.setTasks(calculationFragmentPresenter.getTasksFromFactory());
+                adapter.setTasks(calculationFragmentPresenter.getInitialResult());
         }
         return v;
     }
 
     public String getText(EditText et){
+        Log.d("MyLog", "In CollectionsAndMapsFragment at  getText()");
         return et.getText().toString();
     }
 
     public void hideProgress(){
+        Log.d("MyLog", "In CollectionsAndMapsFragment at  hideProgress()");
         adapter.hideProgress();
     }
 
     public void showProgress(){
+        Log.d("MyLog", "In CollectionsAndMapsFragment at  showProgress()");
         adapter.showProgress();
     }
 
@@ -111,7 +105,7 @@ public class CollectionsAndMapsFragment extends Fragment implements FragmentView
             calculationFragmentPresenter.startCalculation(getText(etAmountOfElements), getText(etAmountOfThreads));
         } else {
             Log.d("MyLog", "In CollectionsAndMapsFragment at onCheckedChanged() \"false branch\"");
-            calculationFragmentPresenter.stopCalculation();
+            calculationFragmentPresenter.stopCalculation(true);
         }
     }
 
@@ -122,24 +116,59 @@ public class CollectionsAndMapsFragment extends Fragment implements FragmentView
     }
 
     @Override
-    public void updateData() {
-        mainHandler.post(myRunnable);
-    }
-
-    @Override
-    public void showError(String error) {
-        Log.d("MyLog", "In CollectionsFragment at showError()");
-        Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
-        btnStart.setChecked(false);
+    public void showToast(String text) {
+        Log.d("MyLog", "In CollectionsFragment at showToast() before showing" );
+        mainHandler.post(() -> Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show());
+        Log.d("MyLog", "In CollectionsFragment at showToast() after showing" );
     }
 
     @Override
     public String getStringFromResources(int stringId) {
+        Log.d("MyLog", "In CollectionsFragment at getStringFromResources()");
         return getString(stringId);
     }
 
     @Override
     public void setBtnChecked(boolean isChecked) {
+        Log.d("MyLog", "In CollectionsFragment at setBtnChecked()");
         btnStart.setChecked(isChecked);
+    }
+
+    @Override
+    public void setThreadsError(String error) {
+        Log.d("MyLog", "In CollectionsFragment at setThreadsError()");
+        etAmountOfThreads.setError(error);
+        btnStart.setChecked(false);
+    }
+
+    @Override
+    public void setElementsError(String error) {
+        Log.d("MyLog", "In CollectionsFragment at setElementsError()");
+        etAmountOfElements.setError(error);
+        btnStart.setChecked(false);
+    }
+
+    @Override
+    public void setupResult(CalculationResult result) {
+        Log.d("MyLog", "In CollectionsFragment at setupResult()");
+        mainHandler.post(() -> adapter.updateItem(result));
+    }
+
+    @Override
+    public void calculationStopped() {
+        Log.d("MyLog", "In CollectionsFragment at calculationStopped()");
+        mainHandler.post(() -> {
+            setBtnChecked(false);
+            hideProgress();
+
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d("MyLog", "In CollectionsFragment at onDestroy()");
+        calculationFragmentPresenter.stopCalculation(false);
+        unbinder.unbind();
+        super.onDestroy();
     }
 }

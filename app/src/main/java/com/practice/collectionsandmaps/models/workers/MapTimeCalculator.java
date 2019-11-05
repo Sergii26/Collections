@@ -2,7 +2,6 @@ package com.practice.collectionsandmaps.models.workers;
 
 import android.util.Log;
 
-import com.practice.collectionsandmaps.dto.MapTaskData;
 import com.practice.collectionsandmaps.dto.Tags;
 import com.practice.collectionsandmaps.dto.TaskData;
 
@@ -14,20 +13,20 @@ public class MapTimeCalculator implements TimeCalculator {
         switch(task.getTag()){
             case Tags.ADDING:{
                 final double start = System.nanoTime();
-                adding(((MapTaskData)(task)).getMap());
-                task.setTimeForTask(((System.nanoTime() - start) / 1000000) + " ms");
+                adding(task.getMap());
+                task.setTimeForTask((System.nanoTime() - start) / 1000000);
                 }
                 break;
             case Tags.SEARCH_IN_MAP:{
                 final double start = System.nanoTime();
-                search(((MapTaskData)(task)).getMap());
-                task.setTimeForTask(((System.nanoTime() - start) / 1000000) + " ms");
+                search(task.getMap());
+                task.setTimeForTask((System.nanoTime() - start) / 1000000);
                 }
                 break;
             case Tags.REMOVING:{
                 final double start = System.nanoTime();
-                removing(((MapTaskData)(task)).getMap());
-                task.setTimeForTask(((System.nanoTime() - start) / 1000000) + " ms");
+                removing(task.getMap());
+                task.setTimeForTask((System.nanoTime() - start) / 1000000);
                 }
                 break;
         }

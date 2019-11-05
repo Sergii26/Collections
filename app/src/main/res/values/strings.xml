@@ -15,7 +15,6 @@
     <string name="btn_stop_state">Stop</string>
     <string name="collection_toggle_title">Collections</string>
     <string name="map_toggle_title">Maps</string>
-    <string name="default_task_time">N/A ms</string>
 
     <string name="adding_to_start_array_list">Adding to start in ArrayList </string>
     <string name="adding_to_middle_array_list">Adding to middle in ArrayList </string>
@@ -54,18 +53,9 @@
     <string name="linked_list">LinkedList </string>
     <string name="hash_map">HashMap </string>
     <string name="tree_map">TreeMap </string>
+    <string name="calculation_finished">Calculation is finished</string>
+    <string name="calculation_stopped">Calculation is stopped</string>
+    <string name="dimension_ms">%1$f ms</string>
+    <string name="default_time">N/A ms</string>
 
-
-<!--    public static final String SEARCH_TASK_TITLE = "Search in ";-->
-
-<!--    public static final String ADDING_TASK_TITLE = "Adding to ";-->
-<!--    public static final String REMOVING_TASK_TITLE = "Removing from ";-->
-<!-- -->
-
-<!--    public static final String ADDING_TO_START_TASK_TITLE = "Adding to start in";-->
-<!--    public static final String ADDING_TO_MIDDLE_TASK_TITLE = "Adding to middle in ";-->
-<!--    public static final String ADDING_TO_END_TASK_TITLE = "Adding to end in ";-->
-<!--    public static final String REMOVING_FROM_START_TASK_TITLE = "Removing from start in ";-->
-<!--    public static final String REMOVING_FROM_MIDDLE_TASK_TITLE = "Removing from middle in ";-->
-<!--    public static final String REMOVING_FROM_END_TASK_TITLE = "Removing from end in ";-->
 </resources>

@@ -3,7 +3,6 @@ package com.practice.collectionsandmaps.models.workers;
 
 import android.util.Log;
 
-import com.practice.collectionsandmaps.dto.ListTaskData;
 import com.practice.collectionsandmaps.dto.Tags;
 import com.practice.collectionsandmaps.dto.TaskData;
 
@@ -13,51 +12,51 @@ import java.util.List;
 public class CollectionTimeCalculator implements TimeCalculator {
 
     public void execAndSetupTime(TaskData task) {
+        Log.d("MyLog", "In CollectionTimeCalculator at execAndSetupTime()");
         switch(task.getTag()){
             case Tags.ADDING_TO_START: {
                 final double start = System.nanoTime();
-                addingToStartTask(((ListTaskData)(task)).getList());
-                task.setTimeForTask(((System.nanoTime() - start) / 1000000) + " ms");
+                addingToStartTask(task.getList());
+                task.setTimeForTask((System.nanoTime() - start) / 1000000);
                 }
                 break;
             case Tags.ADDING_TO_MIDDLE: {
                 final double start = System.nanoTime();
-                addingToMiddleTask(((ListTaskData)(task)).getList());
-                task.setTimeForTask(((System.nanoTime() - start) / 1000000) + " ms");
+                addingToMiddleTask(task.getList());
+                task.setTimeForTask((System.nanoTime() - start) / 1000000);
                 }
                 break;
             case Tags.ADDING_TO_END: {
                 final double start = System.nanoTime();
-                addingToEndTask(((ListTaskData)(task)).getList());
-                task.setTimeForTask(((System.nanoTime() - start) / 1000000) + " ms");
+                addingToEndTask(task.getList());
+                task.setTimeForTask((System.nanoTime() - start) / 1000000);
                 }
                 break;
             case Tags.SEARCH: {
                 final double start = System.nanoTime();
-                searchTask(((ListTaskData)(task)).getList());
-                task.setTimeForTask(((System.nanoTime() - start) / 1000000) + " ms");
+                searchTask(task.getList());
+                task.setTimeForTask((System.nanoTime() - start) / 1000000);
                 }
                 break;
             case Tags.REMOVING_FROM_START: {
                 final double start = System.nanoTime();
-                removingFromStartTask(((ListTaskData)(task)).getList());
-                task.setTimeForTask(((System.nanoTime() - start) / 1000000) + " ms");
+                removingFromStartTask(task.getList());
+                task.setTimeForTask((System.nanoTime() - start) / 1000000);
                 }
                 break;
             case Tags.REMOVING_FROM_MIDDLE: {
                 final double start = System.nanoTime();
-                removingFromMiddleTask(((ListTaskData)(task)).getList());
-                task.setTimeForTask(((System.nanoTime() - start) / 1000000) + " ms");
+                removingFromMiddleTask(task.getList());
+                task.setTimeForTask((System.nanoTime() - start) / 1000000);
                 }
                 break;
             case Tags.REMOVING_FROM_END: {
                 final double start = System.nanoTime();
-                removingFromEndTask(((ListTaskData)(task)).getList());
-                task.setTimeForTask(((System.nanoTime() - start) / 1000000) + " ms");
+                removingFromEndTask(task.getList());
+                task.setTimeForTask((System.nanoTime() - start) / 1000000);
                 }
                 break;
         }
-        Log.d("MyLog", "In Task.doTask() - after setTimeForTask()");
     }
 
 
@@ -72,12 +71,7 @@ public class CollectionTimeCalculator implements TimeCalculator {
 
     public void addingToEndTask(List<Integer> list) {
         Log.d("MyLog", "In addingToEndTask(List<Integer> list). For " + list.getClass().getName());
-        if (list.getClass().getName().equals("java.util.LinkedList")) {
-            Log.d("MyLog", "Is a Linked List! For " + list.getClass().getName());
-            ((LinkedList<Integer>) list).addLast(-3);
-        }
-        Log.d("MyLog", "Is not a Linked List!. For " + list.getClass().getName());
-        list.add(list.size() - 1, -3);
+        list.add(-3);
     }
 
     public void searchTask(List<Integer> list) {

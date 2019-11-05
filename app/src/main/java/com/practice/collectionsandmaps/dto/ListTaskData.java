@@ -1,7 +1,7 @@
 package com.practice.collectionsandmaps.dto;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class ListTaskData extends AbstractTaskData {
 
@@ -17,8 +17,12 @@ public class ListTaskData extends AbstractTaskData {
         setTimeForTask(task.getTimeForTask());
     }
 
+    public void fill(int amountOfElements){
+        list.addAll(Collections.nCopies(amountOfElements, 1));
+    }
+
+    @Override
     public List<Integer> getList() {
         return list;
     }
-
 }
