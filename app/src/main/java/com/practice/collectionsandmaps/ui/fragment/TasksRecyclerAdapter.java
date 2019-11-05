@@ -23,7 +23,6 @@ import butterknife.ButterKnife;
 public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdapter.CollectionsTasksViewHolder>{
 
     private List<TaskData> tasks = new ArrayList<>();
-    private Context context;
 
     public void setTasks(List<TaskData> tasks) {
         this.tasks.clear();
@@ -49,7 +48,6 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
     @Override
     public CollectionsTasksViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.task_item, viewGroup, false);
-        context = viewGroup.getContext();
         return new CollectionsTasksViewHolder(view);
     }
 
@@ -74,16 +72,14 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         public CollectionsTasksViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
-
         }
 
         public void bindView(TaskData task){
             this.tvNameOfTask.setText(task.getNameOfTask());
             if(task.isDefaultTime()){
-                this.tvTimeForTask.setText(context.getString(R.string.default_time));
+                this.tvTimeForTask.setText(tvTimeForTask.getContext().getString(R.string.default_time));
             } else {
-                this.tvTimeForTask.setText(context.getString(R.string.dimension_ms, task.getTimeForTask()));
+                this.tvTimeForTask.setText(tvTimeForTask.getContext().getString(R.string.dimension_ms, task.getTimeForTask()));
             }
             this.progressBar.setVisibility(task.getShowProgress() ? View.VISIBLE : View.INVISIBLE);
         }

@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class CollectionsAndMapsFragment extends Fragment implements FragmentView, CompoundButton.OnCheckedChangeListener {
+public class CollectionsAndMapsFragment extends Fragment implements CalculationFragmentContract.FragmentView, CompoundButton.OnCheckedChangeListener {
 
     public static final String KEY_INDICATOR = "indicator";
 
@@ -39,7 +39,7 @@ public class CollectionsAndMapsFragment extends Fragment implements FragmentView
     ToggleButton btnStart;
     @BindView(R.id.rvTasks)
     RecyclerView rv;
-    private CalculationFragmentPresenter calculationFragmentPresenter;
+    private CalculationFragmentContract.Presenter calculationFragmentPresenter;
     private final TasksRecyclerAdapter adapter = new TasksRecyclerAdapter();
     private final Handler  mainHandler = new Handler(Looper.getMainLooper());
     private Unbinder unbinder;
@@ -171,4 +171,6 @@ public class CollectionsAndMapsFragment extends Fragment implements FragmentView
         unbinder.unbind();
         super.onDestroy();
     }
+
+
 }

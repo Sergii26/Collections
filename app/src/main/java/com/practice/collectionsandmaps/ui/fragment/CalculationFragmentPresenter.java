@@ -12,15 +12,15 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CalculationFragmentPresenter {
+public class CalculationFragmentPresenter implements CalculationFragmentContract.Presenter {
 
     private TasksSupplier tasksSupplier;
     private TimeCalculator timeCalculator;
-    private FragmentView view;
+    private CalculationFragmentContract.FragmentView view;
     private boolean isValid;
     private ExecutorService executorPool;
 
-    public CalculationFragmentPresenter(FragmentView view, TasksSupplier tasksSupplier, TimeCalculator timeCalculator){
+    public CalculationFragmentPresenter(CalculationFragmentContract.FragmentView view, TasksSupplier tasksSupplier, TimeCalculator timeCalculator){
         isValid = true;
         this.view = view;
         this.tasksSupplier = tasksSupplier;

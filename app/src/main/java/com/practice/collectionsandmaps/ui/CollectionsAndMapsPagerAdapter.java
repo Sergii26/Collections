@@ -53,6 +53,7 @@ public class CollectionsAndMapsPagerAdapter extends FragmentStatePagerAdapter {
         switch (position){
             case 0: return context.getString(R.string.collection_toggle_title);
             case 1: return context.getString(R.string.map_toggle_title);
+
             default: return null;
         }
     }
