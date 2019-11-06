@@ -91,11 +91,6 @@ public class CollectionTimeCalculator implements TimeCalculator {
 
     public void removingFromEndTask(List<Integer> list) {
         Log.d("MyLog", "In removingFromEndTask(List<Integer> list). For " + list.getClass().getName());
-        if (list.getClass().getName().equals("java.util.LinkedList")) {
-            Log.d("MyLog", "Is a Linked List! For " + list.getClass().getName());
-            ((LinkedList<Integer>) list).removeLast();
-        }
-        Log.d("MyLog", "Is not a Linked List!. For " + list.getClass().getName());
         list.remove(list.size() - 1);
     }
 
