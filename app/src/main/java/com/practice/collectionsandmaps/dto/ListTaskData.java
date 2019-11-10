@@ -12,11 +12,6 @@ public class ListTaskData extends AbstractTaskData {
         this.list = list;
     }
 
-    public ListTaskData(TaskData task){
-        super(task.getNameOfTask(), task.getTag());
-        setTimeForTask(task.getTimeForTask());
-    }
-
     public void fill(int amountOfElements){
         list.addAll(Collections.nCopies(amountOfElements, 1));
     }

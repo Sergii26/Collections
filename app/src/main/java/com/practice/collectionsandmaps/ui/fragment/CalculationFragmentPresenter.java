@@ -9,8 +9,16 @@ import com.practice.collectionsandmaps.models.workers.TimeCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.inject.Inject;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class CalculationFragmentPresenter implements CalculationFragmentContract.Presenter {
 
@@ -18,8 +26,9 @@ public class CalculationFragmentPresenter implements CalculationFragmentContract
     private TimeCalculator timeCalculator;
     private CalculationFragmentContract.FragmentView view;
     private boolean isValid;
-    private ExecutorService executorPool;
+    private CompositeDisposable compositeDisposable;
 
+    @Inject
     public CalculationFragmentPresenter(CalculationFragmentContract.FragmentView view, TasksSupplier tasksSupplier, TimeCalculator timeCalculator){
         isValid = true;
         this.view = view;
@@ -30,6 +39,8 @@ public class CalculationFragmentPresenter implements CalculationFragmentContract
     public int getCollectionsCount(){
         return tasksSupplier.getCollectionsCount();
     }
+
+
 
     public void startCalculation(String amountOfElements, String amountOfThreads){
         isValid = true;
@@ -61,39 +72,35 @@ public class CalculationFragmentPresenter implements CalculationFragmentContract
             final int elements = Integer.parseInt(amountOfElements);
             stopCalculation(false);
             final List<TaskData> tasks = tasksSupplier.getTasks();
-            executorPool = Executors.newFixedThreadPool(threads);
-            for (TaskData td : new ArrayList<>(tasks)) {
-                executorPool.submit(() -> {
-                    td.fill(elements);
-                    timeCalculator.execAndSetupTime(td);
-
-                    tasks.remove(td);
+            compositeDisposable = new CompositeDisposable();
+            Disposable disposable = Observable.just(new ArrayList<>(tasks))
+            .flatMap((Function<List<TaskData>, ObservableSource<TaskData>>) Observable::fromIterable)
+            .subscribeOn(Schedulers.from(Executors.newFixedThreadPool(threads)))
+            .subscribe(taskData -> {
+                tasks.remove(taskData);
+                taskData.fill(elements);
+                timeCalculator.execAndSetupTime(taskData);
+                if (view != null) {
+                    view.setupResult(taskData.getResult());
+                }
+                if (tasks.isEmpty()) {
                     if (view != null) {
-                        view.setupResult(td.getResult());
+                        view.showToast(view.getStringFromResources(R.string.calculation_finished));
                     }
-                    Log.d("MyLog", "in CalculationFragmentPresenter startCalculation() in run(). tasks.size = " + tasks.size());
-                    if (tasks.isEmpty()) {
-                        Log.d("MyLog", "in CalculationFragmentPresenter startCalculation() in run(). tasks is Empty " + tasks.size());
-                        if (view != null) {
-                            Log.d("MyLog", "in CalculationFragmentPresenter startCalculation() in run(). tasks is Empty + view != null before toast" );
-                            view.showToast(view.getStringFromResources(R.string.calculation_finished));
-                            Log.d("MyLog", "in CalculationFragmentPresenter startCalculation() in run(). tasks is Empty + view != null " );
-                        }
-                        Log.d("MyLog", "in CalculationFragmentPresenter startCalculation() in run(). tasks is Empty AFTER view != null ");
-                        stopCalculation(false);
-                    }
-                });
-            }
+                    stopCalculation(false);
+                }
+            });
+            compositeDisposable.add(disposable);
         }
     }
 
     public void stopCalculation(boolean showMsg) {
         Log.d("MyLog", "in CalculationFragmentPresenter stopCalculation()");
-        if (executorPool == null) {
+        if(compositeDisposable == null){
             return;
         }
-        executorPool.shutdownNow();
-        executorPool = null;
+        compositeDisposable.dispose();
+        compositeDisposable = null;
         if (view != null) {
             view.calculationStopped();
             if (showMsg) {

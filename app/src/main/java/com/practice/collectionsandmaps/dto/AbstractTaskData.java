@@ -3,7 +3,7 @@ package com.practice.collectionsandmaps.dto;
 import java.util.List;
 import java.util.Map;
 
-public class AbstractTaskData implements TaskData{
+public class AbstractTaskData implements TaskData {
 
     private final double DEFAULT_TIME = -1;
 

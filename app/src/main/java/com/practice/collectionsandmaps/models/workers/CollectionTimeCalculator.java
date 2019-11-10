@@ -6,7 +6,6 @@ import android.util.Log;
 import com.practice.collectionsandmaps.dto.Tags;
 import com.practice.collectionsandmaps.dto.TaskData;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class CollectionTimeCalculator implements TimeCalculator {

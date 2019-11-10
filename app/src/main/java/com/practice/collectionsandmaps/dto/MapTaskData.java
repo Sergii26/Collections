@@ -11,11 +11,6 @@ public class MapTaskData extends AbstractTaskData {
         this.map = map;
     }
 
-    public MapTaskData(TaskData task){
-        super(task.getNameOfTask(), task.getTag());
-        setTimeForTask(task.getTimeForTask());
-    }
-
     @Override
     public Map<Integer, Integer> getMap() {
         return map;

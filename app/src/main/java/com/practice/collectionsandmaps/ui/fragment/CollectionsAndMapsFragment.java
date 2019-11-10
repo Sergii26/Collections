@@ -39,7 +39,7 @@ public class CollectionsAndMapsFragment extends Fragment implements CalculationF
     ToggleButton btnStart;
     @BindView(R.id.rvTasks)
     RecyclerView rv;
-    private CalculationFragmentContract.Presenter calculationFragmentPresenter;
+    CalculationFragmentContract.Presenter calculationFragmentPresenter;
     private final TasksRecyclerAdapter adapter = new TasksRecyclerAdapter();
     private final Handler  mainHandler = new Handler(Looper.getMainLooper());
     private Unbinder unbinder;
@@ -59,8 +59,16 @@ public class CollectionsAndMapsFragment extends Fragment implements CalculationF
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        if(getArguments() != null){
-            calculationFragmentPresenter = FragmentInjector.createPresenter(this, getArguments().getInt(KEY_INDICATOR));
+        if(getArguments() != null && getArguments().getInt(KEY_INDICATOR) == FragmentsIndication.MAP){
+            MapsPresenterComponent daggerMapsPresenterComponent = DaggerMapsPresenterComponent.builder()
+                    .mapsFragmentPresenterModule(new MapsFragmentPresenterModule(this))
+                    .build();
+            calculationFragmentPresenter = daggerMapsPresenterComponent.getMapsFragmentPresenter();
+        } else {
+            CollectionsPresenterComponent daggerCollectionsPresenterComponent = DaggerCollectionsPresenterComponent.builder()
+                    .collectionsFragmentPresenterModule(new CollectionsFragmentPresenterModule(this))
+                    .build();
+            calculationFragmentPresenter = daggerCollectionsPresenterComponent.getCollectionsFragmentPresenter();
         }
     }
 
