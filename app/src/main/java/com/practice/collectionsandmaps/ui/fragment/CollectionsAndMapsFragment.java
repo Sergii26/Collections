@@ -26,6 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class CollectionsAndMapsFragment extends Fragment implements CalculationFragmentContract.FragmentView, CompoundButton.OnCheckedChangeListener {
 
@@ -41,7 +42,6 @@ public class CollectionsAndMapsFragment extends Fragment implements CalculationF
     RecyclerView rv;
     CalculationFragmentContract.Presenter calculationFragmentPresenter;
     private final TasksRecyclerAdapter adapter = new TasksRecyclerAdapter();
-    private final Handler  mainHandler = new Handler(Looper.getMainLooper());
     private Unbinder unbinder;
 
     public CollectionsAndMapsFragment() {
@@ -125,9 +125,8 @@ public class CollectionsAndMapsFragment extends Fragment implements CalculationF
 
     @Override
     public void showToast(String text) {
-        Log.d("MyLog", "In CollectionsFragment at showToast() before showing" );
-        mainHandler.post(() -> Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show());
-        Log.d("MyLog", "In CollectionsFragment at showToast() after showing" );
+        Log.d("MyLog", "In CollectionsFragment at showToast()" );
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -159,17 +158,19 @@ public class CollectionsAndMapsFragment extends Fragment implements CalculationF
     @Override
     public void setupResult(CalculationResult result) {
         Log.d("MyLog", "In CollectionsFragment at setupResult()");
-        mainHandler.post(() -> adapter.updateItem(result));
+        adapter.updateItem(result);
     }
 
     @Override
     public void calculationStopped() {
-        Log.d("MyLog", "In CollectionsFragment at calculationStopped()");
-        mainHandler.post(() -> {
+            Log.d("MyLog", "In CollectionsFragment at calculationStopped()");
             setBtnChecked(false);
             hideProgress();
+    }
 
-        });
+    @Override
+    public boolean isCheckedBtn() {
+        return btnStart.isChecked();
     }
 
     @Override
