@@ -76,12 +76,12 @@ public class CalculationFragmentPresenter implements CalculationFragmentContract
                                 + Thread.currentThread().getName());
                         return Observable.just(taskData)
                                 .subscribeOn(pool)
-                                .map(taskData1 -> {
+                                .map(td -> {
                                     Log.d("MyLogThreads", "in CalculationFragmentPresenter startCalculation() at Map() thread = "
                                             + Thread.currentThread().getName());
-                                    taskData1.fill(elements);
-                                    timeCalculator.execAndSetupTime(taskData1);
-                                    return taskData1.getResult();
+                                    td.fill(elements);
+                                    timeCalculator.execAndSetupTime(td);
+                                    return td.getResult();
                                 })
                                 .observeOn(AndroidSchedulers.mainThread());
                     })
