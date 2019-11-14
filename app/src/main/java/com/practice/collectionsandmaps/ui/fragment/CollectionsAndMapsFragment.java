@@ -169,11 +169,6 @@ public class CollectionsAndMapsFragment extends Fragment implements CalculationF
     }
 
     @Override
-    public boolean isCheckedBtn() {
-        return btnStart.isChecked();
-    }
-
-    @Override
     public void onDestroy() {
         Log.d("MyLog", "In CollectionsFragment at onDestroy()");
         calculationFragmentPresenter.stopCalculation(false);

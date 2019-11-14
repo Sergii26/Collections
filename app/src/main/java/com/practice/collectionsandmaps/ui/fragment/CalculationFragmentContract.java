@@ -24,6 +24,5 @@ public class CalculationFragmentContract {
         void setElementsError(String error);
         void setupResult(CalculationResult result);
         void calculationStopped();
-        boolean isCheckedBtn();
     }
 }
