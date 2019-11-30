@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ViewPager viewPager = findViewById(R.id.pager);
+        ViewPager viewPager = findViewById(R.id.mainActivityPager);
         CollectionsAndMapsPagerAdapter collectionsAndMapsPagerAdapter = new CollectionsAndMapsPagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(collectionsAndMapsPagerAdapter);
         TabLayout tabLayout = findViewById(R.id.tablayout);

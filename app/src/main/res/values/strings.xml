@@ -8,10 +8,12 @@
     <string name="et_hint_enter_threads">Enter threads amount</string>
     <string name="tv_elements">Elements</string>
     <string name="tv_threads">Threads</string>
+
     <string name="enter_elements">Amount of elements must be more than null</string>
     <string name="enter_threads">Amount of threads must be more than null</string>
     <string name="elements_must_not_be_empty">Amount of elements must not be empty</string>
     <string name="threads_must_not_be_empty">Amount of threads must not be empty</string>
+
     <string name="btn_stop_state">Stop</string>
     <string name="collection_toggle_title">Collections</string>
     <string name="map_toggle_title">Maps</string>
