@@ -1,9 +1,9 @@
-package com.practice.collectionsandmaps.models.workers;
+package com.practice.collectionsandmaps.models;
 
 import com.practice.collectionsandmaps.dto.TaskData;
 import com.practice.collectionsandmaps.models.workers.TimeCalculator;
 
-public class MockTimeCalculator implements TimeCalculator {
+public class TestTimeCalculator implements TimeCalculator {
     @Override
     public void execAndSetupTime(TaskData task) {
         try {

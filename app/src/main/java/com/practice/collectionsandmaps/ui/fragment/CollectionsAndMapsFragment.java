@@ -15,12 +15,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-
-import com.practice.collectionsandmaps.App;
 import com.practice.collectionsandmaps.R;
 import com.practice.collectionsandmaps.dto.CalculationResult;
 import com.practice.collectionsandmaps.dto.TaskData;
-
 
 import java.util.List;
 
@@ -62,14 +59,9 @@ public class CollectionsAndMapsFragment extends Fragment implements CalculationF
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        if(getArguments() != null && getArguments().getInt(KEY_INDICATOR) == FragmentsIndication.MAP){
-            App.getInstance().getMapsComponent().injectPresenter(this);
-            calculationFragmentPresenter.setView(this);
 
-        } else {
-            App.getInstance().getCollectionsComponent().injectPresenter(this);
-            calculationFragmentPresenter.setView(this);
-        }
+        int fragmentIndication = getArguments().getInt(KEY_INDICATOR) == FragmentsIndication.COLLECTION ? FragmentsIndication.COLLECTION :FragmentsIndication.MAP;
+        DaggerFragmentComponent.builder().fragmentModule(new FragmentModule(this, fragmentIndication)).build().injectsCollectionsAndMapsFragment(this);
     }
 
     @Override

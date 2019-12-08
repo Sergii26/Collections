@@ -1,16 +1,16 @@
 package com.practice.collectionsandmaps;
 
+import com.practice.collectionsandmaps.models.TestTimeCalculatorModule;
 import com.practice.collectionsandmaps.models.suppliers.TaskSupplierModule;
 import com.practice.collectionsandmaps.models.suppliers.TasksSupplier;
 import com.practice.collectionsandmaps.models.workers.TimeCalculator;
-import com.practice.collectionsandmaps.models.workers.TimeCalculatorModule;
 
 import javax.inject.Named;
 
 import dagger.Component;
 
-@Component(modules = {TaskSupplierModule.class, TimeCalculatorModule.class})
-public interface AppComponent {
+@Component(modules = {TestTimeCalculatorModule.class, TaskSupplierModule.class})
+public interface AppTestComponent extends AppComponent{
 
     @Named("Maps")
     public TimeCalculator provideMapsTimeCalculator();
