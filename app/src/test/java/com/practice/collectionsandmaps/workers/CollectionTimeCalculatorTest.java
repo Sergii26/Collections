@@ -25,15 +25,15 @@ import static org.junit.Assert.assertNotEquals;
 public class CollectionTimeCalculatorTest {
 
 
-    private static TasksSupplier supplierMock;
-    private static List<Integer> arrayList;
-    private static List<Integer> linkedList;
-    private static List<Integer> copyOnWriteList;
+    private TasksSupplier supplierMock;
+    private List<Integer> arrayList;
+    private List<Integer> linkedList;
+    private List<Integer> copyOnWriteList;
 
     private static CollectionTimeCalculator calculator;
 
-    @BeforeClass
-    public static void initMocksAndCalculator(){
+    @Before
+    public void initMocksAndCalculator(){
         List<TaskData> tasksForCollections = new ArrayList<>();
         tasksForCollections.add(new ListTaskData(R.string.adding_to_start_array_list, Tags.ADDING_TO_START, new ArrayList<>()));
         tasksForCollections.add(new ListTaskData(R.string.adding_to_start_linked_list, Tags.ADDING_TO_START, new LinkedList<>()));
@@ -60,11 +60,6 @@ public class CollectionTimeCalculatorTest {
         supplierMock = Mockito.mock(TasksSupplier.class);
         Mockito.when(supplierMock.getTasks()).thenReturn(tasksForCollections);
         calculator = new CollectionTimeCalculator();
-
-    }
-
-    @Before
-    public void initLists(){
         arrayList = new ArrayList<>(100);
         for(int i = 0; i < 100; i++){
             arrayList.add(1);
@@ -72,7 +67,6 @@ public class CollectionTimeCalculatorTest {
         linkedList = new LinkedList<>(arrayList);
         copyOnWriteList = new CopyOnWriteArrayList<>(arrayList);
     }
-
 
     @Test
     public void execAndSetupTime_tasksTimesAreChanging(){

@@ -11,6 +11,7 @@ public class CalculationFragmentContract {
         void startCalculation(String amountOfElements, String amountOfThreads);
         void stopCalculation(boolean showMsg);
         List<TaskData> getInitialResult();
+        void setView(CalculationFragmentContract.FragmentView view);
     }
 
     public interface FragmentView {

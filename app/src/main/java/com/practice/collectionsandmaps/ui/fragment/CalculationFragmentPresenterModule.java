@@ -11,24 +11,20 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class CollectionsFragmentPresenterModule {
+public class CalculationFragmentPresenterModule {
 
-    CalculationFragmentContract.FragmentView view;
+    private int indicator;
 
-    CollectionsFragmentPresenterModule(CalculationFragmentContract.FragmentView view){
-        this.view = view;
+    public CalculationFragmentPresenterModule(int indicator){
+        this.indicator = indicator;
     }
 
     @Provides
-    public CalculationFragmentContract.Presenter provideCollectionsPresenter(){
-        return new CalculationFragmentPresenter(view, new CollectionsTasksSupplier(), new CollectionTimeCalculator());
-    }
-
-
-
-    @Provides
-    public CalculationFragmentContract.FragmentView provideFragmentView(){
-        return view;
+    public CalculationFragmentContract.Presenter providePresenter(){
+        if(indicator == FragmentsIndication.COLLECTION) {
+            return new CalculationFragmentPresenter(new CollectionsTasksSupplier(), new CollectionTimeCalculator());
+        }
+        return new CalculationFragmentPresenter(new MapsTasksSupplier(), new MapTimeCalculator());
     }
 
     @Provides
@@ -36,13 +32,18 @@ public class CollectionsFragmentPresenterModule {
         return new CollectionsTasksSupplier();
     }
 
-
-
     @Provides
     public TimeCalculator provideCollectionCalculator(){
         return new CollectionTimeCalculator();
     }
 
+    @Provides
+    public TasksSupplier provideMapsSupplier(){
+        return new MapsTasksSupplier();
+    }
 
-
+    @Provides
+    public TimeCalculator provideMapCalculator(){
+        return new MapTimeCalculator();
+    }
 }

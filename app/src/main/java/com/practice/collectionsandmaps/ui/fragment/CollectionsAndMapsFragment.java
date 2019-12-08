@@ -1,8 +1,6 @@
 package com.practice.collectionsandmaps.ui.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,16 +15,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+
+import com.practice.collectionsandmaps.App;
 import com.practice.collectionsandmaps.R;
 import com.practice.collectionsandmaps.dto.CalculationResult;
 import com.practice.collectionsandmaps.dto.TaskData;
 
+
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class CollectionsAndMapsFragment extends Fragment implements CalculationFragmentContract.FragmentView, CompoundButton.OnCheckedChangeListener {
 
@@ -40,6 +42,7 @@ public class CollectionsAndMapsFragment extends Fragment implements CalculationF
     ToggleButton btnStart;
     @BindView(R.id.rvTasks)
     RecyclerView rv;
+    @Inject
     CalculationFragmentContract.Presenter calculationFragmentPresenter;
     private final TasksRecyclerAdapter adapter = new TasksRecyclerAdapter();
     private Unbinder unbinder;
@@ -60,15 +63,12 @@ public class CollectionsAndMapsFragment extends Fragment implements CalculationF
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         if(getArguments() != null && getArguments().getInt(KEY_INDICATOR) == FragmentsIndication.MAP){
-            MapsPresenterComponent daggerMapsPresenterComponent = DaggerMapsPresenterComponent.builder()
-                    .mapsFragmentPresenterModule(new MapsFragmentPresenterModule(this))
-                    .build();
-            calculationFragmentPresenter = daggerMapsPresenterComponent.getMapsFragmentPresenter();
+            App.getInstance().getMapsComponent().injectPresenter(this);
+            calculationFragmentPresenter.setView(this);
+
         } else {
-            CollectionsPresenterComponent daggerCollectionsPresenterComponent = DaggerCollectionsPresenterComponent.builder()
-                    .collectionsFragmentPresenterModule(new CollectionsFragmentPresenterModule(this))
-                    .build();
-            calculationFragmentPresenter = daggerCollectionsPresenterComponent.getCollectionsFragmentPresenter();
+            App.getInstance().getCollectionsComponent().injectPresenter(this);
+            calculationFragmentPresenter.setView(this);
         }
     }
 

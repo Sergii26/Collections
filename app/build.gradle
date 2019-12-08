@@ -53,4 +53,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
 
+    implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2'
+    androidTestImplementation "com.android.support.test.espresso.idling:idling-concurrent:3.0.2"
+
 }

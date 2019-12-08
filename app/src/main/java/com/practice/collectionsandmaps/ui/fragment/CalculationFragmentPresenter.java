@@ -29,12 +29,16 @@ public class CalculationFragmentPresenter implements CalculationFragmentContract
     private boolean isValid;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    @Inject
-    public CalculationFragmentPresenter(CalculationFragmentContract.FragmentView view, TasksSupplier tasksSupplier, TimeCalculator timeCalculator) {
+//    @Inject
+    public CalculationFragmentPresenter(TasksSupplier tasksSupplier, TimeCalculator timeCalculator) {
         isValid = true;
         this.view = view;
         this.tasksSupplier = tasksSupplier;
         this.timeCalculator = timeCalculator;
+    }
+
+    public void setView(CalculationFragmentContract.FragmentView view){
+        this.view = view;
     }
 
     public int getCollectionsCount() {

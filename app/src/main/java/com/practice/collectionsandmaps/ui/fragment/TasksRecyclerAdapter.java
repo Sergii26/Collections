@@ -28,6 +28,10 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         this.notifyDataSetChanged();
     }
 
+    public List<TaskData> getTasks(){
+        return tasks;
+    }
+
     public void hideProgress(){
         for(int i = 0; i < tasks.size(); i++){
             tasks.get(i).setShowProgress(false);

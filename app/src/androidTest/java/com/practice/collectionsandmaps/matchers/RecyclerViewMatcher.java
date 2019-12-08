@@ -1,4 +1,4 @@
-package com.practice.collectionsandmaps;
+package com.practice.collectionsandmaps.matchers;
 
 import android.support.annotation.NonNull;
 import android.support.test.espresso.matcher.BoundedMatcher;
