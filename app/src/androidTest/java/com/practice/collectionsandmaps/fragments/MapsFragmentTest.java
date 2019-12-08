@@ -46,7 +46,7 @@ public class MapsFragmentTest {
 
     @Before
     public void openMapsTab(){
-        onView(withText("Maps")).perform(click());
+        onView(withText(mActivityRule.getActivity().getString(R.string.map_toggle_title))).perform(click());
     }
 
     public void checkProgressBarNotDisplayed(){

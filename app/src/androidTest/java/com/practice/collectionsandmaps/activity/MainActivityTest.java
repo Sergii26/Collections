@@ -38,8 +38,8 @@ public class MainActivityTest {
 
     @Test
     public void testNamesOfTabs(){
-        onView(withText("Collections")).check(matches(isDisplayed()));
-        onView(withText("Maps")).check(matches(isDisplayed()));
+        onView(withText(mActivityRule.getActivity().getString(R.string.collection_toggle_title))).check(matches(isDisplayed()));
+        onView(withText(mActivityRule.getActivity().getString(R.string.map_toggle_title))).check(matches(isDisplayed()));
     }
 
 

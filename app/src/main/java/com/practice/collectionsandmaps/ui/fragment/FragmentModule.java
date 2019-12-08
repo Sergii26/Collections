@@ -1,6 +1,7 @@
 package com.practice.collectionsandmaps.ui.fragment;
 
 import com.practice.collectionsandmaps.App;
+import com.practice.collectionsandmaps.AppComponent;
 
 import dagger.Module;
 import dagger.Provides;
@@ -18,10 +19,11 @@ public class FragmentModule {
 
     @Provides
     public CalculationFragmentContract.Presenter providePresenter() {
-        return new CalculationFragmentPresenter(fragmentIndication == FragmentsIndication.MAP ? App.getInstance().getAppComponent().provideMapsTasksSupplier() :
-                App.getInstance().getAppComponent().provideCollectionsTasksSupplier(),
-                fragmentIndication == FragmentsIndication.MAP ? App.getInstance().getAppComponent().provideMapsTimeCalculator() :
-                        App.getInstance().getAppComponent().provideCollectionsTimeCalculator(), view);
+        final AppComponent appComponent = App.getInstance().getAppComponent();
+        return new CalculationFragmentPresenter(fragmentIndication == FragmentsIndication.MAP ? appComponent.provideMapsTasksSupplier() :
+                appComponent.provideCollectionsTasksSupplier(),
+                fragmentIndication == FragmentsIndication.MAP ? appComponent.provideMapsTimeCalculator() :
+                        appComponent.provideCollectionsTimeCalculator(), view);
     }
 }
 
